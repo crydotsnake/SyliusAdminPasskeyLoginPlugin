@@ -1,0 +1,14 @@
+sylius_twig_hooks:
+    hooks:
+        'sylius_admin.admin_user.update.content.form.sections#right':
+            personal_information:
+                template: '@SyliusAdmin/admin_user/form/sections/personal_information.html.twig'
+                priority: 100
+            passkey_setup:
+                template: '@SKrullSyliusAdminPasskeyLoginPlugin/form/sections/passkey_setup.html.twig'
+                priority: 0
+
+        'sylius_admin.security.login.page.content.form':
+            passkey_login:
+                template: '@SKrullSyliusAdminPasskeyLoginPlugin/admin/security/login/passkey_button.html.twig'
+                priority: 50

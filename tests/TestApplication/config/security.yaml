@@ -1,0 +1,10 @@
+security:
+    firewalls:
+        admin:
+            webauthn:
+                authentication:
+                    profile: skrull_admin_passkey
+                    routes:
+                        options_path: '/%sylius_admin.path_name%/login/passkey/options'
+                        result_path: '/%sylius_admin.path_name%/login/passkey'
+                success_handler: skrull_sylius_admin_passkey_login.security.passkey_authentication_success_handler

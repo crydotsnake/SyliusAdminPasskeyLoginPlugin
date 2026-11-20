@@ -1,0 +1,5 @@
+skrull_sylius_admin_passkey_login_plugin_admin:
+    resource: "@SKrullSyliusAdminPasskeyLoginPlugin/config/routes/admin.yaml"
+
+skrull_sylius_admin_passkey_login_plugin_shop:
+    resource: "@SKrullSyliusAdminPasskeyLoginPlugin/config/routes/shop.yaml"
