@@ -1,0 +1,11 @@
+skrull_sylius_admin_passkey_login_webauthn:
+    resource: .
+    type: webauthn
+
+skrull_sylius_admin_passkey_login_admin_passkey_delete:
+    path: /%sylius_admin.path_name%/passkeys/{id}/delete
+    methods: [POST]
+    defaults:
+        _controller: skrull_sylius_admin_passkey_login.controller.delete_passkey
+    requirements:
+        id: '\d+'

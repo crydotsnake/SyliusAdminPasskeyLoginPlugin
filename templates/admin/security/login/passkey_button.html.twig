@@ -1,0 +1,21 @@
+{% set urls = skrull_admin_passkey_login_urls() %}
+
+{% if urls is not null %}
+    <div
+        class="mt-3"
+        data-skrull-passkey-login
+        data-options-url="{{ urls.options }}"
+        data-result-url="{{ urls.result }}"
+        data-message-cancelled="{{ 'skrull_sylius_admin_passkey_login.ui.error_cancelled'|trans }}"
+        data-message-failed="{{ 'skrull_sylius_admin_passkey_login.ui.login_failed'|trans }}"
+    >
+        <div class="hr-text">{{ 'skrull_sylius_admin_passkey_login.ui.or'|trans }}</div>
+
+        <button type="button" class="btn btn-outline-primary w-100" data-skrull-passkey-login-button>
+            {{ ux_icon('tabler:lock', {class: 'icon'}) }}
+            {{ 'skrull_sylius_admin_passkey_login.ui.login_with_passkey'|trans }}
+        </button>
+
+        <div class="alert alert-danger mt-3 mb-0 d-none" role="alert" data-skrull-passkey-login-error></div>
+    </div>
+{% endif %}

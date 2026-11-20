@@ -1,0 +1,22 @@
+skrull_sylius_admin_passkey_login:
+    ui:
+        passkey: Passkey
+        passkeys: Passkeys
+        intro: Melde dich ohne Passwort an - mit Fingerabdruck, Gesichtserkennung oder der PIN deines Geräts.
+        only_own_account: Passkeys kann nur der Administrator selbst verwalten, wenn er mit seinem eigenen Konto angemeldet ist.
+        no_passkeys: Du hast noch keinen Passkey angelegt.
+        unnamed_passkey: Passkey
+        created_at: Angelegt
+        last_used_at: Zuletzt verwendet
+        never_used: noch nie
+        name_placeholder: Name, z. B. MacBook oder iPhone
+        add_passkey: Passkey hinzufügen
+        delete: Löschen
+        delete_confirm: 'Passkey "%name%" wirklich löschen? Du kannst dich danach mit diesem Passkey nicht mehr anmelden.'
+        error_unsupported: Dein Browser unterstützt keine Passkeys.
+        error_cancelled: Der Vorgang wurde abgebrochen oder ist abgelaufen.
+        error_already_registered: Für dieses Gerät ist bereits ein Passkey angelegt.
+        error_generic: 'Der Passkey konnte nicht gespeichert werden:'
+        or: oder
+        login_with_passkey: Mit Passkey anmelden
+        login_failed: Die Anmeldung mit dem Passkey ist fehlgeschlagen.

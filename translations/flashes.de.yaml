@@ -1,0 +1,3 @@
+skrull_sylius_admin_passkey_login:
+    passkey_added: Der Passkey wurde hinzugefügt.
+    passkey_deleted: Der Passkey wurde gelöscht.

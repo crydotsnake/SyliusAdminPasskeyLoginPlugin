@@ -1,0 +1,22 @@
+skrull_sylius_admin_passkey_login:
+    ui:
+        passkey: Passkey
+        passkeys: Passkeys
+        intro: Sign in without a password - using your fingerprint, face or device PIN.
+        only_own_account: Passkeys can only be managed by the administrator while signed in to their own account.
+        no_passkeys: You have not added a passkey yet.
+        unnamed_passkey: Passkey
+        created_at: Added
+        last_used_at: Last used
+        never_used: never
+        name_placeholder: Name, e.g. MacBook or iPhone
+        add_passkey: Add passkey
+        delete: Delete
+        delete_confirm: 'Really delete the passkey "%name%"? You will no longer be able to sign in with it.'
+        error_unsupported: Your browser does not support passkeys.
+        error_cancelled: The operation was cancelled or timed out.
+        error_already_registered: A passkey is already registered for this device.
+        error_generic: 'The passkey could not be saved:'
+        or: or
+        login_with_passkey: Sign in with a passkey
+        login_failed: Signing in with the passkey failed.
