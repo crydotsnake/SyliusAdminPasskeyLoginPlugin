@@ -19,7 +19,7 @@
     "require": {
         "php": "^8.4",
         "sylius/grid-bundle": "^1.16.1",
-        "sylius/sylius": "^2.1",
+        "sylius/sylius": "^2.0",
         "symfony/clock": "^7.4 || ^8.0",
         "symfony/config": "^7.4 || ^8.0",
         "symfony/dependency-injection": "^7.4 || ^8.0",
@@ -39,7 +39,7 @@
         "madewithlove/license-checker": "^3.2",
         "nyholm/psr7": "^1.8",
         "phpstan/phpstan": "^2.1",
-        "phpstan/phpstan-doctrine": "^2.0",
+        "phpstan/phpstan-doctrine": "^2.0.12",
         "phpstan/phpstan-webmozart-assert": "^2.0",
         "phpunit/phpunit": "^10.5",
         "sylius-labs/coding-standard": "^4.5",
@@ -53,6 +53,7 @@
         "symfony/runtime": "^7.4 || ^8.0",
         "symfony/web-profiler-bundle": "^7.4 || ^8.0",
         "symfony/webpack-encore-bundle": "^2.2",
+        "symplify/easy-coding-standard": "^13.0",
         "vincentlanglet/twig-cs-fixer": "^4.1"
     },
     "config": {
@@ -105,6 +106,7 @@
             "cd vendor/sylius/test-application && yarn install && yarn build",
             "vendor/bin/console assets:install"
         ],
+        "test": "phpunit --testsuite=unit",
         "test-app-init": [
             "@database-reset",
             "@frontend-clear"
