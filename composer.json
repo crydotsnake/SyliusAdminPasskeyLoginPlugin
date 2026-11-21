@@ -1,10 +1,11 @@
 {
     "name": "skrull/sylius-admin-passkey-login-plugin",
     "type": "sylius-plugin",
-    "description": "Passkey (WebAuthn) login support for Sylius administrators",
+    "description": "Passkey (WebAuthn) login support for the Sylius admin",
     "keywords": [
         "sylius",
         "sylius-plugin",
+        "sylius-admin",
         "test-application",
         "passkey",
         "webauthn",
