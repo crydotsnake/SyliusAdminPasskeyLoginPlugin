@@ -1,0 +1,10 @@
+{% from '@SyliusAdmin/shared/helper/breadcrumbs.html.twig' import breadcrumbs %}
+
+{% set admin_user = hookable_metadata.context.resource.adminUser %}
+
+{{ breadcrumbs([
+    {name: 'sylius.ui.dashboard', url: path('sylius_admin_dashboard')},
+    {name: 'sylius.ui.admin_users', url: path('sylius_admin_admin_user_index')},
+    {name: admin_user.username, url: path('sylius_admin_admin_user_update', {id: admin_user.id})},
+    {name: 'skrull_sylius_admin_passkey_login.ui.rename_passkey', active: true},
+]) }}

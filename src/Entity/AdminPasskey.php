@@ -17,6 +17,8 @@ use Webauthn\TrustPath\TrustPath;
 #[ORM\Index(name: 'skrull_admin_passkey_user_handle_idx', columns: ['user_handle'])]
 class AdminPasskey
 {
+    public const NAME_MAX_LENGTH = 100;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column(type: Types::INTEGER)]
@@ -176,5 +178,16 @@ class AdminPasskey
     public function getLastUsedAt(): ?\DateTimeImmutable
     {
         return $this->lastUsedAt;
+    }
+
+    public static function normalizeName(mixed $name): ?string
+    {
+        if (!is_string($name)) {
+            return null;
+        }
+
+        $name = trim($name);
+
+        return '' !== $name ? mb_substr($name, 0, self::NAME_MAX_LENGTH) : null;
     }
 }

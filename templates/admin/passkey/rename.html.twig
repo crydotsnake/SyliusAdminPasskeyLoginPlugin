@@ -1,0 +1,7 @@
+{% extends '@SyliusAdmin/shared/layout/base.html.twig' %}
+
+{% block title %}{{ 'skrull_sylius_admin_passkey_login.ui.rename_passkey'|trans }} | {{ parent() }}{% endblock %}
+
+{% block body %}
+    {% hook ['skrull_sylius_admin_passkey_login.admin.passkey.rename', 'sylius_admin.common.update'] with {resource: passkey, form: form} %}
+{% endblock %}

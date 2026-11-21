@@ -1,0 +1,7 @@
+{% import '@SyliusAdmin/shared/helper/button.html.twig' as button %}
+
+{{ button.cancel({
+    text: 'sylius.ui.back'|trans,
+    class: 'btn',
+    fallback_url: path('sylius_admin_admin_user_update', {id: hookable_metadata.context.resource.adminUser.id}),
+}) }}

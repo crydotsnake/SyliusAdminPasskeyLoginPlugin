@@ -1,3 +1,4 @@
 skrull_sylius_admin_passkey_login:
     passkey_added: The passkey has been added.
     passkey_deleted: The passkey has been deleted.
+    passkey_renamed: The passkey has been renamed.

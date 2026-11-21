@@ -10,7 +10,7 @@
     <div class="card-body">
         {% if not is_own_account %}
             <p class="text-secondary mb-0">
-                {{ ux_icon('tabler:lock', {class: 'icon'}) }}
+                {{ ux_icon('tabler:user-key', {class: 'icon'}) }}
                 {{ 'skrull_sylius_admin_passkey_login.ui.only_own_account'|trans }}
             </p>
         {% else %}
@@ -29,38 +29,55 @@
                     {{ 'skrull_sylius_admin_passkey_login.ui.intro'|trans }}
                 </p>
 
-                {% if passkeys is empty %}
-                    <p class="fst-italic text-secondary">
-                        {{ 'skrull_sylius_admin_passkey_login.ui.no_passkeys'|trans }}
-                    </p>
-                {% else %}
-                    <div class="list-group list-group-flush mb-3">
-                        {% for passkey in passkeys %}
-                            <div class="list-group-item px-0 d-flex align-items-center gap-3">
-                                <div class="flex-fill">
-                                    <div class="fw-bold">
-                                        {{ passkey.name ?? 'skrull_sylius_admin_passkey_login.ui.unnamed_passkey'|trans }}
-                                    </div>
-                                    <div class="text-secondary small">
-                                        {{ 'skrull_sylius_admin_passkey_login.ui.created_at'|trans }}: {{ passkey.createdAt|date('d-m-Y H:i') }}
-                                        &middot;
-                                        {{ 'skrull_sylius_admin_passkey_login.ui.last_used_at'|trans }}:
-                                        {{ passkey.lastUsedAt is not null ? passkey.lastUsedAt|date('d-m-Y H:i') : 'skrull_sylius_admin_passkey_login.ui.never_used'|trans }}
-                                    </div>
-                                </div>
-                                <button
-                                    type="button"
-                                    class="btn btn-ghost-danger btn-sm"
-                                    data-skrull-passkey-delete
-                                    data-url="{{ path('skrull_sylius_admin_passkey_login_admin_passkey_delete', {id: passkey.id}) }}"
-                                    data-csrf-token="{{ csrf_token('skrull_admin_passkey_delete_' ~ passkey.id) }}"
-                                    data-confirm="{{ 'skrull_sylius_admin_passkey_login.ui.delete_confirm'|trans({'%name%': passkey.name ?? 'skrull_sylius_admin_passkey_login.ui.unnamed_passkey'|trans}) }}"
-                                >
-                                    {{ ux_icon('tabler:trash', {class: 'icon'}) }}
-                                    {{ 'skrull_sylius_admin_passkey_login.ui.delete'|trans }}
-                                </button>
-                            </div>
-                        {% endfor %}
+                {% if passkeys is not empty %}
+                    <div class="table-responsive mb-3">
+                        <table class="table table-vcenter">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'sylius.ui.name'|trans }}</th>
+                                    <th>{{ 'skrull_sylius_admin_passkey_login.ui.created_at'|trans }}</th>
+                                    <th>{{ 'skrull_sylius_admin_passkey_login.ui.last_used_at'|trans }}</th>
+                                    <th class="w-1"><span class="visually-hidden">{{ 'sylius.ui.actions'|trans }}</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for passkey in passkeys %}
+                                    <tr>
+                                        <td class="fw-bold">
+                                            {{ passkey.name ?? 'skrull_sylius_admin_passkey_login.ui.unnamed_passkey'|trans }}
+                                        </td>
+                                        <td class="text-secondary text-nowrap">
+                                            {{ passkey.createdAt|date('d-m-Y H:i') }}
+                                        </td>
+                                        <td class="text-secondary text-nowrap">
+                                            {{ passkey.lastUsedAt is not null ? passkey.lastUsedAt|date('d-m-Y H:i') : 'skrull_sylius_admin_passkey_login.ui.never_used'|trans }}
+                                        </td>
+                                        <td>
+                                            <div class="btn-list flex-nowrap justify-content-end">
+                                                <a
+                                                    href="{{ path('skrull_sylius_admin_passkey_login_admin_passkey_rename', {id: passkey.id}) }}"
+                                                    class="btn btn-ghost-primary btn-sm"
+                                                >
+                                                    {{ ux_icon('tabler:pencil', {class: 'icon'}) }}
+                                                    {{ 'skrull_sylius_admin_passkey_login.ui.rename'|trans }}
+                                                </a>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-ghost-danger btn-sm"
+                                                    data-skrull-passkey-delete
+                                                    data-url="{{ path('skrull_sylius_admin_passkey_login_admin_passkey_delete', {id: passkey.id}) }}"
+                                                    data-csrf-token="{{ csrf_token('skrull_admin_passkey_delete_' ~ passkey.id) }}"
+                                                    data-confirm="{{ 'skrull_sylius_admin_passkey_login.ui.delete_confirm'|trans({'%name%': passkey.name ?? 'skrull_sylius_admin_passkey_login.ui.unnamed_passkey'|trans}) }}"
+                                                >
+                                                    {{ ux_icon('tabler:trash', {class: 'icon'}) }}
+                                                    {{ 'skrull_sylius_admin_passkey_login.ui.delete'|trans }}
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 {% endif %}
 
