@@ -9,3 +9,11 @@ skrull_sylius_admin_passkey_login_admin_passkey_delete:
         _controller: skrull_sylius_admin_passkey_login.controller.delete_passkey
     requirements:
         id: '\d+'
+
+skrull_sylius_admin_passkey_login_admin_passkey_rename:
+    path: /%sylius_admin.path_name%/passkeys/{id}/rename
+    methods: [GET, POST]
+    defaults:
+        _controller: skrull_sylius_admin_passkey_login.controller.rename_passkey
+    requirements:
+        id: '\d+'

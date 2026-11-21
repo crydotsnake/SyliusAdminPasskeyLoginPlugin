@@ -4,7 +4,6 @@ skrull_sylius_admin_passkey_login:
         passkeys: Passkeys
         intro: Sign in without a password - using your fingerprint, face or device PIN.
         only_own_account: Passkeys can only be managed by the administrator while signed in to their own account.
-        no_passkeys: You have not added a passkey yet.
         unnamed_passkey: Passkey
         created_at: Added
         last_used_at: Last used
@@ -20,3 +19,6 @@ skrull_sylius_admin_passkey_login:
         or: or
         login_with_passkey: Sign in with a passkey
         login_failed: Signing in with the passkey failed.
+        rename: Rename
+        rename_passkey: Rename passkey
+        rename_hint: The name helps you to recognise the passkey. Leave it empty for "Passkey".

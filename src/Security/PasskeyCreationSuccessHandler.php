@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SKrull\SyliusAdminPasskeyLoginPlugin\Security;
 
 use Doctrine\ORM\EntityManagerInterface;
+use SKrull\SyliusAdminPasskeyLoginPlugin\Entity\AdminPasskey;
 use SKrull\SyliusAdminPasskeyLoginPlugin\Repository\AdminPasskeyRepository;
 use Sylius\Component\Core\Model\AdminUserInterface;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -19,8 +20,6 @@ use Webauthn\PublicKeyCredentialUserEntity;
 
 final class PasskeyCreationSuccessHandler implements SuccessHandler
 {
-    public const NAME_MAX_LENGTH = 100;
-
     public function __construct(
         private readonly AdminPasskeyRepository $adminPasskeyRepository,
         private readonly EntityManagerInterface $entityManager,
@@ -46,7 +45,7 @@ final class PasskeyCreationSuccessHandler implements SuccessHandler
             $adminUser instanceof AdminUserInterface &&
             $passkey->getAdminUser()->getId() === $adminUser->getId()
         ) {
-            $passkey->setName($this->normalizeName($data['name'] ?? null));
+            $passkey->setName(AdminPasskey::normalizeName($data['name'] ?? null));
             $this->entityManager->flush();
         }
 
@@ -56,16 +55,5 @@ final class PasskeyCreationSuccessHandler implements SuccessHandler
         }
 
         return new JsonResponse(['status' => 'ok', 'errorMessage' => ''], Response::HTTP_CREATED);
-    }
-
-    private function normalizeName(mixed $name): ?string
-    {
-        if (!is_string($name)) {
-            return null;
-        }
-
-        $name = trim($name);
-
-        return '' !== $name ? mb_substr($name, 0, self::NAME_MAX_LENGTH) : null;
     }
 }

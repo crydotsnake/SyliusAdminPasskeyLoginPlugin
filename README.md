@@ -12,6 +12,7 @@ Built on top of [`web-auth/webauthn-symfony-bundle`](https://github.com/web-auth
 - The administrators grid shows which admins have a passkey.
 - The login page gets a **"Sign in with a passkey"** button. No username has to be typed
   (discoverable credentials).
+- Admins can also edit the names of their passkeys.
 
 The login with password still works as before.
 

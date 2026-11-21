@@ -6,6 +6,8 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use SKrull\SyliusAdminPasskeyLoginPlugin\Checker\AdminPasskeyChecker;
 use SKrull\SyliusAdminPasskeyLoginPlugin\Controller\DeletePasskeyAction;
+use SKrull\SyliusAdminPasskeyLoginPlugin\Controller\RenamePasskeyAction;
+use SKrull\SyliusAdminPasskeyLoginPlugin\Form\Type\PasskeyRenameType;
 use SKrull\SyliusAdminPasskeyLoginPlugin\Grid\AdminUserGridMutator;
 use SKrull\SyliusAdminPasskeyLoginPlugin\Repository\AdminPasskeyRepository;
 use SKrull\SyliusAdminPasskeyLoginPlugin\Repository\AdminPasskeyUserEntityRepository;
@@ -76,6 +78,22 @@ return static function (ContainerConfigurator $container): void {
             service('security.csrf.token_manager'),
         ])
         ->tag('controller.service_arguments')
+    ;
+
+    $services->set('skrull_sylius_admin_passkey_login.controller.rename_passkey', RenamePasskeyAction::class)
+        ->args([
+            service('skrull_sylius_admin_passkey_login.repository.admin_passkey'),
+            service('doctrine.orm.entity_manager'),
+            service('security.helper'),
+            service('form.factory'),
+            service('router'),
+            service('twig'),
+        ])
+        ->tag('controller.service_arguments')
+    ;
+
+    $services->set('skrull_sylius_admin_passkey_login.form.type.passkey_rename', PasskeyRenameType::class)
+        ->tag('form.type')
     ;
 
     $services->set('skrull_sylius_admin_passkey_login.checker.admin_passkey', AdminPasskeyChecker::class)
