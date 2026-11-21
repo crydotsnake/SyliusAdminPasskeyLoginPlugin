@@ -1,7 +1,8 @@
 # Sylius Admin Passkey Login Plugin
 
 Lets Sylius administrators sign in with a **passkey** (WebAuthn / FIDO2) instead of a password -
-using Touch ID, Face ID, Windows Hello, Android, a password manager or a security key.
+using Touch ID, Face ID, Windows Hello, Android, a password manager, a phone via QR code
+or a FIDO2 security key (plain U2F keys are not supported, since discoverable credentials are required).
 
 Built on top of [`web-auth/webauthn-symfony-bundle`](https://github.com/web-auth/webauthn-framework).
 

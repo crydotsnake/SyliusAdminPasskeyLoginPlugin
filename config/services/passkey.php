@@ -11,6 +11,7 @@ use SKrull\SyliusAdminPasskeyLoginPlugin\Repository\AdminPasskeyRepository;
 use SKrull\SyliusAdminPasskeyLoginPlugin\Repository\AdminPasskeyUserEntityRepository;
 use SKrull\SyliusAdminPasskeyLoginPlugin\Security\PasskeyAuthenticationSuccessHandler;
 use SKrull\SyliusAdminPasskeyLoginPlugin\Security\PasskeyCreationSuccessHandler;
+use SKrull\SyliusAdminPasskeyLoginPlugin\Security\PasskeyUserLoaderListener;
 use SKrull\SyliusAdminPasskeyLoginPlugin\Security\UserHandleGenerator;
 use SKrull\SyliusAdminPasskeyLoginPlugin\Twig\AdminPasskeyExtension;
 
@@ -58,6 +59,13 @@ return static function (ContainerConfigurator $container): void {
             service('security.helper'),
             service('router'),
         ])
+    ;
+
+    $services->set('skrull_sylius_admin_passkey_login.security.passkey_user_loader_listener', PasskeyUserLoaderListener::class)
+        ->args([
+            service('skrull_sylius_admin_passkey_login.repository.admin_passkey'),
+        ])
+        ->tag('kernel.event_subscriber')
     ;
 
     $services->set('skrull_sylius_admin_passkey_login.controller.delete_passkey', DeletePasskeyAction::class)
