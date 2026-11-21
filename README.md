@@ -1,15 +1,14 @@
 # Sylius Admin Passkey Login Plugin
 
 Lets Sylius administrators sign in with a **passkey** (WebAuthn / FIDO2) instead of a password -
-using Touch ID, Face ID, Windows Hello, Android, a password manager, a phone via QR code
-or a FIDO2 security key (plain U2F keys are not supported, since discoverable credentials are required).
+using Touch ID, Face ID, Windows Hello, Android, a password manager or a FIDO2 security key
+(plain U2F keys are not supported, since discoverable credentials are required).
 
 Built on top of [`web-auth/webauthn-symfony-bundle`](https://github.com/web-auth/webauthn-framework).
 
 ## Features
 
-- Admins add and delete passkeys on the edit page of **their own** account
-  (Administrators → *your user* → Edit). Other admins only see a notice.
+- Admins can add and delete passkeys on the edit page of **their own** account. Other admins only see a notice.
 - The administrators grid shows which admins have a passkey.
 - The login page gets a **"Sign in with a passkey"** button. No username has to be typed
   (discoverable credentials).
@@ -61,10 +60,13 @@ Only the currently logged-in admin can manage their own passkeys.
     ];
     ```
 
-    If Symfony Flex executed the contrib recipe of `web-auth/webauthn-symfony-bundle`, it created
-    `config/packages/webauthn.yaml` with the dummy repositories `DummyPublicKeyCredentialSourceRepository` and
-    `DummyPublicKeyCredentialUserEntityRepository`. Remove the `credential_repository` and `user_repository` lines
-    (or the whole file): they override the repositories of the plugin, and passkeys would be neither saved nor found.
+    If Symfony Flex executed the contrib recipe of `web-auth/webauthn-symfony-bundle`, it created:
+
+    - `config/packages/webauthn.yaml` with the dummy repositories `DummyPublicKeyCredentialSourceRepository` and
+      `DummyPublicKeyCredentialUserEntityRepository`. Remove the `credential_repository` and `user_repository` lines
+      (or the whole file): they override the repositories of the plugin, and passkeys would be neither saved nor found.
+    - `config/routes/webauthn_routes.yaml`. It can be deleted: the plugin routes already import the WebAuthn routes.
+    - The variables `RELYING_PARTY_ID` and `RELYING_PARTY_NAME` in `.env`. The plugin does not use them.
 
 3. Import the plugin configuration in `config/packages/skrull_sylius_admin_passkey_login.yaml`:
 
@@ -159,6 +161,7 @@ that handle both.
 
 - A passkey is always attached to the **logged-in** admin; the registration endpoints never take a user
   from the request.
+- The passkey login always signs in the owner of the passkey; the user is never looked up by username or email.
 - Deleting a passkey requires a CSRF token. A passkey of another admin is answered with `404`.
 - The login response does not reveal whether an account exists or has a passkey; unknown usernames get
   fake, stable credential IDs from the WebAuthn bundle.
@@ -184,4 +187,4 @@ vendor/bin/ecs check
 
 ## License
 
-The SyliusAdminPasskeyLogin Plugin is released under the MIT License. For more infos see the license file: [LICENSE](LICENSE).
+The SyliusAdminPasskeyLogin Plugin is released under the MIT License. For more information see the license file: [LICENSE](LICENSE.md).
