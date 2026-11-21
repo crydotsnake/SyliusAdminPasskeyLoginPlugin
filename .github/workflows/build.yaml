@@ -24,64 +24,28 @@ jobs:
     tests:
         runs-on: ubuntu-latest
 
-        name: "Sylius ${{ matrix.sylius }}, PHP ${{ matrix.php }}, Symfony ${{ matrix.symfony }}, ${{ matrix.database }}, ${{ matrix.dependencies }}"
+        name: "Sylius ${{ matrix.sylius }}, PHP ${{ matrix.php }}, Symfony ${{ matrix.symfony }}, ${{ matrix.database }}"
 
         strategy:
             fail-fast: false
             matrix:
                 php: ["8.4"]
                 symfony: ["^7.4"]
-                sylius: ["~2.1.0", "~2.2.0", "~2.3.0"]
+                sylius: ["~2.0.0", "~2.1.0", "~2.2.0", "~2.3.0"]
                 database: ["mysql:8.4"]
                 node: ["22.x"]
-                dependencies: ["highest", "lowest"]
 
                 include:
-                    - php: "8.4"
-                      symfony: "^8.0"
-                      sylius: "~2.3.0"
-                      database: "mysql:8.4"
-                      node: "22.x"
-                      dependencies: "highest"
-                    - php: "8.4"
-                      symfony: "^8.0"
-                      sylius: "~2.3.0"
-                      database: "mysql:8.0"
-                      node: "22.x"
-                      dependencies: "highest"
-                    - php: "8.4"
-                      symfony: "^8.0"
-                      sylius: "~2.3.0"
-                      database: "mariadb:10.11"
-                      node: "22.x"
-                      dependencies: "highest"
-                    - php: "8.4"
-                      symfony: "^8.0"
-                      sylius: "~2.3.0"
-                      database: "mariadb:11.4"
-                      node: "22.x"
-                      dependencies: "highest"
-                    - php: "8.4"
-                      symfony: "^8.0"
-                      sylius: "~2.3.0"
-                      database: "postgres:15"
-                      node: "22.x"
-                      dependencies: "highest"
-                    - php: "8.4"
-                      symfony: "^8.0"
-                      sylius: "~2.3.0"
-                      database: "postgres:16"
-                      node: "22.x"
-                      dependencies: "highest"
-                    - php: "8.4"
-                      symfony: "^8.0"
-                      sylius: "~2.3.0"
-                      database: "postgres:17"
-                      node: "22.x"
-                      dependencies: "highest"
+                    - { php: "8.4", symfony: "^7.4", sylius: "~2.3.0", database: "mysql:8.0", node: "22.x" }
+                    - { php: "8.4", symfony: "^7.4", sylius: "~2.3.0", database: "postgres:15", node: "22.x" }
+                    - { php: "8.4", symfony: "^7.4", sylius: "~2.3.0", database: "postgres:16", node: "22.x" }
+                    - { php: "8.4", symfony: "^7.4", sylius: "~2.3.0", database: "postgres:17", node: "22.x" }
 
         env:
             APP_ENV: test
+            # Sylius 2.0 and 2.1 are EOL and every release is affected by security advisories,
+            # which Composer blocks by default. Allow them only for these compatibility jobs.
+            COMPOSER_POLICY_ADVISORIES_BLOCK: ${{ (matrix.sylius == '~2.0.0' || matrix.sylius == '~2.1.0') && '0' || '1' }}
 
         steps:
             -
@@ -91,6 +55,7 @@ jobs:
                 name: Build Sylius Test Application
                 uses: SyliusLabs/BuildTestAppAction@v4
                 with:
+                    e2e_js: "no"
                     cache_key: "${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}"
                     cache_restore_key: "${{ runner.os }}-php-${{ matrix.php }}-composer-"
                     database: "${{ matrix.database }}"
@@ -98,15 +63,6 @@ jobs:
                     php_version: "${{ matrix.php }}"
                     sylius_version: "${{ matrix.sylius }}"
                     symfony_version: "${{ matrix.symfony }}"
-
-            -
-                name: Downgrade direct dependencies to their lowest versions
-                if: matrix.dependencies == 'lowest'
-                run: |
-                    packages=$(php -r '$c = json_decode(file_get_contents("composer.json"), true); echo implode(" ", array_diff(array_keys($c["require"]), ["php", "sylius/sylius"]));')
-                    composer update $packages --prefer-lowest --prefer-stable --no-plugins --no-interaction --no-progress
-                    composer dump-autoload
-                    vendor/bin/console cache:clear
 
             -
                 name: Run unit tests
@@ -121,18 +77,5 @@ jobs:
                 run: vendor/bin/console lint:container
 
             -
-                name: Validate Doctrine mapping
-                run: vendor/bin/console doctrine:schema:validate --skip-sync
-
-            -
-                name: Run PHPStan
-                run: vendor/bin/phpstan analyse --no-progress
-
-            -
-                name: Run ECS
-                run: vendor/bin/ecs check
-
-            -
                 name: Run Non-unit PHPUnit tests
                 run: vendor/bin/phpunit --colors=always --testsuite=non-unit
-

@@ -19,7 +19,7 @@ Built on top of [`web-auth/webauthn-symfony-bundle`](https://github.com/web-auth
 | | Version |
 |---|---|
 | PHP | 8.4 or higher |
-| Sylius | 2.1 - 2.3 with Symfony 7.4, Sylius 2.3 with Symfony 8 |
+| Sylius | 2.0 - 2.3 with Symfony 7.4, Sylius 2.3 with Symfony 8 |
 | Database | MySQL / MariaDB or PostgreSQL |
 
 WebAuthn only works on **HTTPS** (or `localhost`). The browser has to support the WebAuthn JSON helpers

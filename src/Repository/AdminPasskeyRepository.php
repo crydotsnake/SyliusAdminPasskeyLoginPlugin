@@ -36,9 +36,12 @@ class AdminPasskeyRepository extends ServiceEntityRepository implements Credenti
     /** @return list<CredentialRecord> */
     public function findAllForUserEntity(PublicKeyCredentialUserEntity $publicKeyCredentialUserEntity): array
     {
+        /** @var list<AdminPasskey> $passkeys */
+        $passkeys = $this->findBy(['userHandle' => $publicKeyCredentialUserEntity->id]);
+
         return array_map(
             static fn (AdminPasskey $passkey): CredentialRecord => $passkey->toCredentialRecord(),
-            $this->findBy(['userHandle' => $publicKeyCredentialUserEntity->id]),
+            $passkeys,
         );
     }
 
@@ -66,7 +69,10 @@ class AdminPasskeyRepository extends ServiceEntityRepository implements Credenti
     /** @return list<AdminPasskey> */
     public function findByAdminUser(AdminUserInterface $adminUser): array
     {
-        return $this->findBy(['adminUser' => $adminUser], ['createdAt' => 'ASC']);
+        /** @var list<AdminPasskey> $passkeys */
+        $passkeys = $this->findBy(['adminUser' => $adminUser], ['createdAt' => 'ASC']);
+
+        return $passkeys;
     }
 
     /** @return list<int> */
