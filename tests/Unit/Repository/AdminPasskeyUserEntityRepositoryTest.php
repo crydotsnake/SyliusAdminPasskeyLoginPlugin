@@ -65,6 +65,19 @@ final class AdminPasskeyUserEntityRepositoryTest extends TestCase
         self::assertSame('ada', $this->repository->findOneByUsername('ada@example.com')?->name);
     }
 
+    public function testItPrefersAnEmailShapedUsernameOverTheEmail(): void
+    {
+        $adminUser = $this->createAdmin();
+        $adminUser->setUsername('ada@old-domain.com');
+        $adminUser->setUsernameCanonical('ada@old-domain.com');
+        $this->adminUserRepository->method('findOneBy')->willReturnCallback(
+            static fn (array $criteria): ?AdminUserInterface => ['usernameCanonical' => 'ada@old-domain.com'] === $criteria ? $adminUser : null,
+        );
+        $this->adminUserRepository->method('findOneByEmail')->willReturn(null);
+
+        self::assertSame('ada@old-domain.com', $this->repository->findOneByUsername('Ada@Old-Domain.com')?->name);
+    }
+
     public function testItFallsBackToTheUsernameAsDisplayName(): void
     {
         $this->adminUserRepository->method('findOneBy')->willReturn($this->createAdmin());

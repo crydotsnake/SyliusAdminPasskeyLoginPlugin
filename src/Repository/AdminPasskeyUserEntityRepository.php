@@ -24,9 +24,10 @@ final class AdminPasskeyUserEntityRepository implements PublicKeyCredentialUserE
 
     public function findOneByUsername(string $username): ?PublicKeyCredentialUserEntity
     {
-        $adminUser = filter_var($username, \FILTER_VALIDATE_EMAIL)
-            ? $this->adminUserRepository->findOneByEmail($username)
-            : $this->adminUserRepository->findOneBy(['usernameCanonical' => $this->canonicalizer->canonicalize($username)]);
+        $adminUser = $this->adminUserRepository->findOneBy(['usernameCanonical' => $this->canonicalizer->canonicalize($username)]);
+        if (null === $adminUser && filter_var($username, \FILTER_VALIDATE_EMAIL)) {
+            $adminUser = $this->adminUserRepository->findOneByEmail($username);
+        }
 
         return $adminUser instanceof AdminUserInterface ? $this->createUserEntity($adminUser) : null;
     }

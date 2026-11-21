@@ -1,6 +1,6 @@
 # Sylius Admin Passkey Login Plugin
 
-Lets Sylius administrators sign in with a **passkey** (WebAuthn / FIDO2) instead of a password —
+Lets Sylius administrators sign in with a **passkey** (WebAuthn / FIDO2) instead of a password -
 using Touch ID, Face ID, Windows Hello, Android, a password manager or a security key.
 
 Built on top of [`web-auth/webauthn-symfony-bundle`](https://github.com/web-auth/webauthn-framework).
@@ -50,7 +50,7 @@ Only the currently logged-in admin can manage their own passkeys.
     composer require skrull/sylius-admin-passkey-login-plugin
     ```
 
-2. Register the bundles in `config/bundles.php` (the WebAuthn bundle must come first):
+2. Register the bundles in `config/bundles.php` (if Symfony Flex has not done it already):
 
     ```php
     return [
@@ -59,6 +59,11 @@ Only the currently logged-in admin can manage their own passkeys.
         SKrull\SyliusAdminPasskeyLoginPlugin\SKrullSyliusAdminPasskeyLoginPlugin::class => ['all' => true],
     ];
     ```
+
+    If Symfony Flex executed the contrib recipe of `web-auth/webauthn-symfony-bundle`, it created
+    `config/packages/webauthn.yaml` with the dummy repositories `DummyPublicKeyCredentialSourceRepository` and
+    `DummyPublicKeyCredentialUserEntityRepository`. Remove the `credential_repository` and `user_repository` lines
+    (or the whole file): they override the repositories of the plugin, and passkeys would be neither saved nor found.
 
 3. Import the plugin configuration in `config/packages/skrull_sylius_admin_passkey_login.yaml`:
 
@@ -120,15 +125,27 @@ Only the currently logged-in admin can manage their own passkeys.
 ## Configuration
 
 The plugin pre-configures the WebAuthn bundle with its own profile `skrull_admin_passkey`.
-Every value can be overridden in `config/packages/webauthn.yaml`, for example the name shown by the browser:
+Single values can be overridden in `config/packages/webauthn.yaml`, for example the relying party ID
+(by default the browser uses the domain of the admin panel):
 
 ```yaml
 webauthn:
     creation_profiles:
         skrull_admin_passkey:
             rp:
-                name: 'My Shop Administration'
+                id: 'shop.example.com'
+    request_profiles:
+        skrull_admin_passkey:
+            rp_id: 'shop.example.com'
 ```
+
+The name shown by the browser defaults to `Sylius Administration` and can be changed with
+`creation_profiles.skrull_admin_passkey.rp.name`. This option is deprecated since `web-auth/webauthn-lib` 5.3 and
+will be removed in 6.0. If you set it to `''`, you also have to set `rp.id`: the bundle then uses the ID as name,
+otherwise the browser rejects the registration.
+
+Lists are merged, not replaced: values added to `public_key_credential_parameters` are appended to the default
+algorithms, so ES256 and RS256 cannot be removed this way.
 
 Defaults: discoverable credentials (`resident_key: required`), user verification required
 (fingerprint, face or PIN), no attestation, algorithms ES256 and RS256.
