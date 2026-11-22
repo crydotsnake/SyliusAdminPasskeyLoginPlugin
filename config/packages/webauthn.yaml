@@ -1,0 +1,27 @@
+webauthn:
+    credential_repository: SKrull\SyliusAdminPasskeyLoginPlugin\Repository\AdminPasskeyRepository
+    user_repository: skrull_sylius_admin_passkey_login.repository.admin_passkey_user_entity
+
+    creation_profiles:
+        skrull_admin_passkey:
+            rp:
+                name: 'Sylius Administration'
+            authenticator_selection_criteria:
+                resident_key: required
+                user_verification: required
+            attestation_conveyance: none
+            public_key_credential_parameters: [-7, -257]
+
+    request_profiles:
+        skrull_admin_passkey:
+            user_verification: required
+
+    controllers:
+        enabled: true
+        creation:
+            skrull_admin_passkey:
+                options_path: '/%sylius_admin.path_name%/passkeys/options'
+                result_path: '/%sylius_admin.path_name%/passkeys'
+                profile: skrull_admin_passkey
+                user_entity_guesser: Webauthn\Bundle\Security\Guesser\CurrentUserEntityGuesser
+                success_handler: skrull_sylius_admin_passkey_login.security.passkey_creation_success_handler
