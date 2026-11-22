@@ -129,7 +129,8 @@ Only the currently logged-in admin can manage their own passkeys.
 ## Configuration
 
 The plugin pre-configures the WebAuthn bundle with its own profile `skrull_admin_passkey`.
-Single values can be overridden in `config/packages/webauthn.yaml`, for example the relying party ID
+All defaults are defined in the plugin's [`config/packages/webauthn.yaml`](config/packages/webauthn.yaml).
+Single values can be overridden in your application's `config/packages/webauthn.yaml`, for example the relying party ID
 (by default the browser uses the domain of the admin panel):
 
 ```yaml
