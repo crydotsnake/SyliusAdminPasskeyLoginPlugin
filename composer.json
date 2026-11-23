@@ -42,7 +42,7 @@
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-doctrine": "^2.0.12",
         "phpstan/phpstan-webmozart-assert": "^2.0",
-        "phpunit/phpunit": "^10.5",
+        "phpunit/phpunit": "^13.4",
         "sylius-labs/coding-standard": "^4.5",
         "sylius/sylius-rector": "^3.0",
         "sylius/test-application": "^2.0.0@alpha",
